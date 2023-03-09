@@ -82,7 +82,9 @@ mapper={
     'W': str(generateCapitalLetter('W')),
     'X': str(generateCapitalLetter('X')),
     'Y': str(generateCapitalLetter('Y')),
-    'Z': str(generateCapitalLetter('Z'))
+    'Z': str(generateCapitalLetter('Z')),
+    '@': '@',
+    
 }
 
 # print(mapper)
