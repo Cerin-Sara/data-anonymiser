@@ -88,8 +88,8 @@ mapper={
 }
 
 # print(mapper)
-for x in mapper.values():
-  print(x) 
+# for x in mapper.values():
+#   print(x) 
 
 word="123Hello"
 
