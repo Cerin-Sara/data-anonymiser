@@ -84,12 +84,14 @@ mapper={
     'Y': str(generateCapitalLetter('Y')),
     'Z': str(generateCapitalLetter('Z')),
     '@': '@',
-    
+
 }
 
 # print(mapper)
+for x in mapper.values():
+  print(x) 
 
 word="123Hello"
 
-for letter in word:
-    print(mapper[letter], end="")
+# for letter in word:
+    # print(mapper[letter], end="")
