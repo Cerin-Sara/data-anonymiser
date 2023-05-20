@@ -1,6 +1,6 @@
 import random
 def generateNumber(n):
-    num = random.randint(0, 10)
+    num = random.randint(0, 9)
     if(num != n):
         return num
     else:
@@ -83,15 +83,22 @@ mapper={
     'X': str(generateCapitalLetter('X')),
     'Y': str(generateCapitalLetter('Y')),
     'Z': str(generateCapitalLetter('Z')),
-    '@': '@',
-
 }
 
 # print(mapper)
-# for x in mapper.values():
-#   print(x) 
 
-word="123Hello"
+# word="Roshan"
 
 # for letter in word:
-    # print(mapper[letter], end="")
+#     print(mapper[letter], end="")
+
+def returnString(str1):
+    chars=list(str1)
+    res=[]
+    for char in chars:
+        if char not in mapper:
+            res.append(char)
+        else:
+            res.append(mapper[char])
+    str1 = ''.join(res)
+    return str1
