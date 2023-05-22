@@ -64,10 +64,10 @@ def k_anonymity_algo(df):
 
     # Create checkboxes for column selection
     generalize_cols = st.multiselect("Select columns", columns)
-    st.write(df)
+    # st.write(df)
     quasi_identifiers = quasi_identifiers_fn(df)
     print(len(quasi_identifiers), len(df.columns))
-    k_level = st.slider("Select k-anonymity level", 2, 10, 5)
+    k_level = st.slider("Select k-anonymity level", 2, 50, 2)
     st.write("Selected k-anonymity level:", k_level)
 
     quasi_identifiers = generalize_cols
@@ -103,18 +103,18 @@ def k_anonymity_algo(df):
         st.write(df)
         data = df.copy()
         anonymized_data = pd.read_csv("anonymized.csv")
-        sensitive = sensitive_attr
-        original_entropy = calculate_entropy(data[sensitive])
-        anonymized_entropy = calculate_entropy(anonymized_data[sensitive])
-        # create a bar chart showing the results
-        fig, ax = plt.subplots(figsize=(8, 6))
-        ax.bar(["Original", "Anonymized"], [original_entropy,anonymized_entropy], color=["blue", "orange"])
-        ax.set_ylabel("Entropy")
-        ax.set_title(
-            "Entropy of Sensitive Attribute Before and After Anonymization")
+        # sensitive = sensitive_attr
+        # original_entropy = calculate_entropy(data[sensitive])
+        # anonymized_entropy = calculate_entropy(anonymized_data[sensitive])
+        # # create a bar chart showing the results
+        # fig, ax = plt.subplots(figsize=(8, 6))
+        # ax.bar(["Original", "Anonymized"], [original_entropy,anonymized_entropy], color=["blue", "orange"])
+        # ax.set_ylabel("Entropy")
+        # ax.set_title(
+        #     "Entropy of Sensitive Attribute Before and After Anonymization")
 
-        # show the results in Streamlit
-        st.pyplot(fig)
+        # # show the results in Streamlit
+        # st.pyplot(fig)
         # calculate the proportion of records with a unique quasi-identifier before and after anonymization
 
         original_proportion = calculate_proportion_unique(data, quasi_identifiers)
@@ -233,7 +233,7 @@ def epsilon_differential_privacy(df, flag):
 
 uploaded_file = st.file_uploader("Upload dataset", type="csv")
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file, nrows=10)
+    df = pd.read_csv(uploaded_file, nrows=50)
     st.write("Original dataset:")
     st.write(df)
     # Create the checkboxes
