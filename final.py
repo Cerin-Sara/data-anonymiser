@@ -64,10 +64,10 @@ def k_anonymity_algo(df):
 
     # Create checkboxes for column selection
     generalize_cols = st.multiselect("Select columns", columns)
-    # st.write(df)
+    st.write(df)
     quasi_identifiers = quasi_identifiers_fn(df)
     print(len(quasi_identifiers), len(df.columns))
-    k_level = st.slider("Select k-anonymity level", 2, 50, 2)
+    k_level = st.slider("Select k-anonymity level", 2, 10, 5)
     st.write("Selected k-anonymity level:", k_level)
 
     quasi_identifiers = generalize_cols
@@ -99,22 +99,21 @@ def k_anonymity_algo(df):
             df.loc[(df[quasi_identifiers] == group_values).all(axis=1), quasi_identifiers] = generalized_values
 
         df.to_csv("anonymized.csv", index=False)
-        st.write("K-Anonymity:")
         st.write(df)
         data = df.copy()
         anonymized_data = pd.read_csv("anonymized.csv")
-        # sensitive = sensitive_attr
-        # original_entropy = calculate_entropy(data[sensitive])
-        # anonymized_entropy = calculate_entropy(anonymized_data[sensitive])
-        # # create a bar chart showing the results
-        # fig, ax = plt.subplots(figsize=(8, 6))
-        # ax.bar(["Original", "Anonymized"], [original_entropy,anonymized_entropy], color=["blue", "orange"])
-        # ax.set_ylabel("Entropy")
-        # ax.set_title(
-        #     "Entropy of Sensitive Attribute Before and After Anonymization")
+        sensitive = sensitive_attr
+        original_entropy = calculate_entropy(data[sensitive])
+        anonymized_entropy = calculate_entropy(anonymized_data[sensitive])
+        # create a bar chart showing the results
+        fig, ax = plt.subplots(figsize=(8, 6))
+        ax.bar(["Original", "Anonymized"], [original_entropy,anonymized_entropy], color=["blue", "orange"])
+        ax.set_ylabel("Entropy")
+        ax.set_title(
+            "Entropy of Sensitive Attribute Before and After Anonymization")
 
-        # # show the results in Streamlit
-        # st.pyplot(fig)
+        # show the results in Streamlit
+        st.pyplot(fig)
         # calculate the proportion of records with a unique quasi-identifier before and after anonymization
 
         original_proportion = calculate_proportion_unique(data, quasi_identifiers)
@@ -233,7 +232,7 @@ def epsilon_differential_privacy(df, flag):
 
 uploaded_file = st.file_uploader("Upload dataset", type="csv")
 if uploaded_file is not None:
-    df = pd.read_csv(uploaded_file, nrows=50)
+    df = pd.read_csv(uploaded_file, nrows=10)
     st.write("Original dataset:")
     st.write(df)
     # Create the checkboxes
@@ -251,3 +250,20 @@ if uploaded_file is not None:
     if k_anonymity and not epsilon_dp:
         pii_identify(df)
         k_anonymity_algo(df)
+
+from langchain.agents import create_csv_agent
+from langchain.llms import OpenAI
+
+openai_api_key = "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"
+
+# st.set_page_config(page_title="CSV Reader")
+st.header("CSV Reader")
+user_csv = st.file_uploader("Upload your anonymized CSV file", type="csv")
+if user_csv is not None:
+    llm = OpenAI(openai_api_key=openai_api_key, temperature=0)
+    agent = create_csv_agent(llm, user_csv, verbose=True)
+
+    user_question = st.text_input("Enter your question")
+    if user_question is not None and user_question!="":
+        with st.spinner(text="In progress"):
+            st.write(agent.run(user_question))
