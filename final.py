@@ -99,6 +99,7 @@ def k_anonymity_algo(df):
             df.loc[(df[quasi_identifiers] == group_values).all(axis=1), quasi_identifiers] = generalized_values
 
         df.to_csv("anonymized.csv", index=False)
+        st.write("K-Anonymity:")
         st.write(df)
         data = df.copy()
         anonymized_data = pd.read_csv("anonymized.csv")
@@ -240,13 +241,13 @@ if uploaded_file is not None:
     k_anonymity = st.checkbox("K-Anonymity")
 
     if epsilon_dp and k_anonymity:
-        epsilon_differential_privacy(df, True)
         pii_identify(df)
+        epsilon_differential_privacy(df, True)
 
     if epsilon_dp and not k_anonymity:
-        epsilon_differential_privacy(df, False)
         pii_identify(df)
+        epsilon_differential_privacy(df, False)
 
     if k_anonymity and not epsilon_dp:
-        k_anonymity_algo(df)
         pii_identify(df)
+        k_anonymity_algo(df)
