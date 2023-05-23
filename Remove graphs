@@ -114,7 +114,7 @@ def k_anonymity_algo(df):
             "Entropy of Sensitive Attribute Before and After Anonymization")
 
         # show the results in Streamlit
-        st.pyplot(fig)
+        # st.pyplot(fig)
         # calculate the proportion of records with a unique quasi-identifier before and after anonymization
 
         original_proportion = calculate_proportion_unique(data, quasi_identifiers)
@@ -127,7 +127,7 @@ def k_anonymity_algo(df):
             "Proportion of Records with Unique Quasi-Identifier Before and After Anonymization")
 
         # show the results in Streamlit
-        st.pyplot(fig)
+        # st.pyplot(fig)
 
         # Load the original dataset and the anonymized dataset
         original_data = df.copy()
@@ -173,8 +173,8 @@ def k_anonymity_algo(df):
 
         # Display the evaluation results
         st.write('# Anonymization Quality Evaluation')
-        st.write('## Information Loss')
-        st.write(iloss.drop('index'))
+        # st.write('## Information Loss')
+        # st.write(iloss.drop('index'))
         st.write('## Re-identification Risk')
         st.write(create_scatter_plot(risks))
 
@@ -231,7 +231,7 @@ def epsilon_differential_privacy(df, flag):
     if(flag):
         k_anonymity_algo(df)
 
-st.header("Data Anonymizer")
+st.title("Data Anonymizer")
 uploaded_file = st.file_uploader("Upload dataset", type="csv")
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file, nrows=50)
@@ -259,7 +259,7 @@ from langchain.llms import OpenAI
 openai_api_key = "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"
 
 # st.set_page_config(page_title="CSV Reader")
-st.header("Query Analyzer")
+st.header("Upload anonymized CSV file")
 user_csv = st.file_uploader("Upload your anonymized CSV file", type="csv")
 if user_csv is not None:
     llm = OpenAI(openai_api_key=openai_api_key, temperature=0)
@@ -271,7 +271,7 @@ if user_csv is not None:
             st.write(agent.run(user_question))
 
 
-st.title("Image Anonymizer")
+st.header("Image Anonymizer")
 
 image_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
